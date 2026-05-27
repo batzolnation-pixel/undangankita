@@ -154,7 +154,7 @@
     </div>
 
     <div class="hero">
-        <div class="container" data-aos="fade-up" data-aos-duration="1500">
+        <div class="container" data-sans-serif="fade-up" data-aos-duration="1500">
             <p class="text-uppercase tracking-wide mb-2" style="letter-spacing: 2px; font-size: 0.8rem;">The Wedding Invitation of</p>
             <h1 class="cursive">Romeo & Juliet</h1>
             <p class="my-3 small">Selasa, 26 Mei 2026</p>
@@ -301,7 +301,7 @@
                         </form>
 
                         <div class="mt-4 p-2 bg-light rounded text-start" id="wishes-container" style="max-height: 200px; overflow-y: auto;">
-                            <span class="small fw-bold d-block mb-1"><i class="far fa-comments me-2"></i>Ucapan Doa:</span>
+                            <span class="small fw-bold d-block mb-1"><i class="far fa-comments me-2"></i>Ucapan Doa (Arsip Halaman):</span>
                             <div id="wishes-list" class="small">
                                 <p class="border-bottom py-2 m-0"><strong>Andi:</strong> Selamat menempuh hidup baru ya Romeo & Juliet! Bahagia selalu 🎉</p>
                             </div>
@@ -374,20 +374,37 @@
             }
         }, 1000);
 
+        // FUNGSI KIRIM UCAPAN & OTOMATIS REDIRECT KE WHATSAPP KAMU
         function submitWish(event) {
             event.preventDefault();
+            
             const name = document.getElementById('name').value;
             const status = document.getElementById('status').value;
             const message = document.getElementById('message').value;
             const wishesList = document.getElementById('wishes-list');
 
+            // Tampilkan di halaman web undangan secara instan sebagai arsip visual
             const newWish = document.createElement('div');
             newWish.className = "border-bottom py-2";
             newWish.innerHTML = `<strong>${name}</strong> <span class="badge bg-secondary" style="font-size:10px;">${status}</span>:<br>${message}`;
-            
             wishesList.insertBefore(newWish, wishesList.firstChild);
+
+            // Integrasi Nomor WhatsApp Tujuan (Sudah berformat internasional 62)
+            const nomorWA = "6283143152613";
+            const teksWA = `Halo Romeo & Juliet, berikut adalah konfirmasi kehadiran saya:\n\n` +
+                           `📝 *Nama:* ${name}\n` +
+                           `📌 *Konfirmasi Kehadiran:* ${status}\n` +
+                           `💬 *Ucapan & Doa:* ${message}\n\n` +
+                           `Terima kasih ya!`;
+
+            // Proses membuat link WhatsApp aman lewat browser
+            const linkWA = `https://api.whatsapp.com/send?phone=${nomorWA}&text=${encodeURIComponent(teksWA)}`;
+
+            // Reset form input di halaman web
             document.getElementById('wish-form').reset();
-            alert('Terima kasih atas ucapan dan konfirmasinya!');
+            
+            // Buka aplikasi WhatsApp secara otomatis
+            window.open(linkWA, '_blank');
         }
     </script>
 </body>
